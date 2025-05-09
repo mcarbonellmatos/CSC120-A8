@@ -47,12 +47,32 @@ public class Cafe extends Building implements CafeRequirements {
     }
 
 
+  @Override
+  public void showOptions(){
+      System.out.println("Available options " + this.name + ":\n + enter()");
+    }
+
+  @Override
+  public void goToFloor(int floorNum){
+    if (floorNum > 1){
+        System.out.println("Cafe only has one floor.");
+    }
+    else {
+     this.activeFloor = floorNum;
+    }
+  }
+
+
 
     public static void main(String[] args) {
         Cafe neilsonCafe = new Cafe("Compass Cafe", "7 Elm St", 1, 26, 40, 20, 30);
         neilsonCafe.sellCoffee(10, 2, 1);
         neilsonCafe.sellCoffee(16, 3, 2);
         neilsonCafe.restock(200, 30, 20, 10);
+        neilsonCafe.showOptions();
+        neilsonCafe.enter();
+        neilsonCafe.goToFloor(2);//Intentional error
+        
     }
     
 }

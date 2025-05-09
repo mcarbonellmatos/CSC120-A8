@@ -2,15 +2,17 @@ import java.util.Hashtable;
 
 public class Library extends Building implements LibraryRequirements {
   private Hashtable<String, Boolean> collection;
+  private boolean hasElevator;
 
     /**
      * @param name
      * @param address
      * @param nFloors
      */
-    public Library(String name, String address, int nFloors) {
+    public Library(String name, String address, int nFloors, Boolean hasElevator) {
       super(name, address, nFloors);
       this.collection = new Hashtable<String, Boolean>();
+      this.hasElevator = hasElevator;
       System.out.println("You have built a library: 📖");
     }
 
@@ -62,9 +64,63 @@ public class Library extends Building implements LibraryRequirements {
     {
       System.out.println(this.collection.toString());
     }
+
+    @Override
+    public void showOptions(){
+      if (hasElevator) {
+        super.showOptions();
+      }
+      else {
+        System.out.println("Available options " + this.name + ":\n + enter() \n + goUp() \n goDown()");
+      }
+    }
+
+    @Override
+    public void goToFloor(int floorNum){
+      if (hasElevator ){
+        super.goToFloor(floorNum);
+      }
+      else {
+        System.out.println("Library doesn't have an elevator.");
+      }  
+    }
+
+    @Override
+    public void goUp(){
+      if (this.activeFloor == -1){
+        throw new RuntimeException("You are outside of the building. Call enter() first");
+      }
+      if (this.activeFloor < 3){
+        this.activeFloor++;
+      }
+      else {
+        throw new RuntimeException("You are in the 3rd floor.");
+      }
+    }
+
+    // @Override
+    // public void enter(){
+    //   if(this.activeFloor == -1) {
+    //     this.activeFloor = 0;
+    //     System.out.println("You have enetered the library");
+    //   }
+    // }
+
+    @Override
+    public void goDown(){
+      if (this.activeFloor == -1){
+        throw new RuntimeException("You are outside of the building. Call enter() first");
+      }
+      if (this.activeFloor > -1){
+        this.activeFloor--;
+      }
+      else {
+        throw new RuntimeException("You are in the 1st floor.");
+      }
+    }
   
     public static void main(String[] args) {
-      Library hillyer = new Library("Hillyer Art Library", "22 Elm St", 3);
+      Library hillyer = new Library("Hillyer Art Library", "22 Elm St", 3, true);
       
       hillyer.addTitle("The Great Gatsby");
       hillyer.addTitle("The Count of Monte Cristo");
@@ -82,6 +138,10 @@ public class Library extends Building implements LibraryRequirements {
       hillyer.returnBook("The Great Gatsby");
       System.out.println("Final collection inventory:");
       hillyer.printCollection();
+
+      hillyer.showOptions();
+      hillyer.enter();
+      hillyer.goToFloor(2);
     }
 }
   
